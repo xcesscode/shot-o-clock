@@ -1,7 +1,7 @@
 // ===== SHOOTERS - NEON RAVE DRINKING GAME =====
 const addBtn = document.getElementById("addBtn");
 const resetBtn = document.getElementById("resetBtn");
-const newRoundBtn = document.getElementById("newRoundBtn");
+// const newRoundBtn = document.getElementById("newRoundBtn");
 const nextBtn = document.getElementById("nextBtn");
 const action = document.getElementById("action");
 const player = document.getElementById("player");
@@ -60,7 +60,6 @@ const daresDatabase = [
   "🎨 FUNNY FACE - FIRST LAUGH DRINKS",
   "👃 SIP FROM EVERYONE'S DRINK",
   "🎲 GROUP CHEERS - EVERYONE SIPS",
-  "🃏 PICK A CARD - HIGH CARD WINS",
   "🎱 TRUTH OR DARE - YOU GO FIRST",
   "🎮 LAST TO TOUCH THE FLOOR DRINKS",
   "🎯 COMPLIMENT EVERYONE OR DRINK",
@@ -107,20 +106,20 @@ addBtn.onclick = function () {
 };
 
 // ===== NEW ROUND =====
-newRoundBtn.onclick = function () {
-  if (playersList.length === 0) {
-    action.textContent = "⚠️ ADD PLAYERS FIRST!";
-    action.classList.add("neon-text-pink");
-    return;
-  }
-  resetCards();
-  cardsRevealed = false;
-  action.textContent = `${player.textContent}, PICK YOUR DESTINY!`;
-  action.classList.add("neon-text-blue");
-  result.innerHTML = "";
-  newRoundBtn.disabled = false;
-  nextBtn.disabled = false;
-};
+// newRoundBtn.onclick = function () {
+//   if (playersList.length === 0) {
+//     action.textContent = "⚠️ ADD PLAYERS FIRST!";
+//     action.classList.add("neon-text-pink");
+//     return;
+//   }
+//   resetCards();
+//   cardsRevealed = false;
+//   action.textContent = `${player.textContent}, PICK YOUR DESTINY!`;
+//   action.classList.add("neon-text-blue");
+//   result.innerHTML = "";
+//   newRoundBtn.disabled = false;
+//   nextBtn.disabled = false;
+// };
 
 // ===== NEXT PLAYER =====
 nextBtn.onclick = function () {

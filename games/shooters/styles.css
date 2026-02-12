@@ -320,6 +320,8 @@ body {
   border-color: var(--neon-pink);
   box-shadow: 0 0 15px rgba(255, 43, 158, 0.3);
   text-shadow: 0 0 8px var(--neon-pink);
+  padding: 20px 50px;
+  font-size: 1.8rem;
 }
 
 .neon-btn.blue {
@@ -332,6 +334,8 @@ body {
   border-color: var(--neon-green);
   box-shadow: 0 0 15px rgba(0, 255, 159, 0.3);
   text-shadow: 0 0 8px var(--neon-green);
+  padding: 20px 50px;
+  font-size: 1.8rem;
 }
 
 .neon-btn:hover {
@@ -608,11 +612,34 @@ body {
   .footer-content {
     flex-direction: column;
     gap: 5px;
+    font-size: 0.8rem;
+  }
+
+  .footer-sub {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
   }
 
   .header-sub {
     font-size: 1rem;
     letter-spacing: 2px;
+  }
+
+  .age-modal-content {
+    width: 70%;
+    height: fit-content;
+  }
+
+  /* .neon-btn.pink {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px rgba(255, 43, 158, 0.3);
+    text-shadow: 0 0 8px var(--neon-pink);
+    font-size: 200px;
+  } */
+
+  .neon-btn.green .neon-btn.pink {
+    font-size: 30px;
+    padding-left: 2px;
   }
 
   .marquee-container {
