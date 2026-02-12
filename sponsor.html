@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes"
+    />
+    <title>Sponsor SHOT CLOCK · Card Back Sponsorships</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@700;800;900&family=Space+Grotesk:wght@500;600;700&family=Righteous&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Link to your existing styles.css -->
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      /* ---------- SPONSOR PAGE SPECIFIC STYLES ---------- */
+      .sponsor-hero {
+        text-align: center;
+        margin: 4rem 0 2rem;
+        padding: 2rem;
+        border-bottom: 4px solid var(--neon-pink, #d91582);
+        border-top: 4px solid var(--neon-blue, #0cac9d);
+      }
+
+      .sponsor-hero h1 {
+        font-family: "Righteous", "Inter", sans-serif;
+        font-size: clamp(3rem, 10vw, 5rem);
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px var(--neon-pink, #d91582);
+      }
+
+      .sponsor-tagline {
+        font-size: 1.8rem;
+        color: var(--neon-blue, #0cac9d);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+      }
+
+      .badge-premium {
+        background: linear-gradient(145deg, #ffd700, #ffb347);
+        color: black;
+        padding: 0.3rem 1rem;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        display: inline-block;
+        border: 1px solid white;
+      }
+
+      /* ---------- CARD BACK SPONSORSHIP HIGHLIGHT ---------- */
+      .card-back-showcase {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        margin: 4rem 0;
+        padding: 2rem;
+        background: linear-gradient(145deg, #0a0a14, #000);
+        border: 3px solid var(--neon-pink);
+        border-radius: 40px;
+        box-shadow: 0 0 50px rgba(217, 21, 130, 0.3);
+      }
+
+      .card-mockup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .card-sample {
+        width: 220px;
+        height: 300px;
+        perspective: 2000px;
+      }
+
+      .card-sample-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        box-shadow: 0 0 30px rgba(0, 247, 255, 0.5);
+        border-radius: 20px;
+      }
+
+      .card-sample:hover .card-sample-inner {
+        transform: rotateY(180deg);
+      }
+
+      .card-sample-front,
+      .card-sample-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .card-sample-front {
+        background: linear-gradient(145deg, #0a0a14, #141428);
+        border: 3px solid var(--neon-blue);
+        color: white;
+      }
+
+      .card-sample-back {
+        background: linear-gradient(145deg, #1a0a1a, #1a0a14);
+        border: 3px solid var(--neon-pink);
+        transform: rotateY(180deg);
+        color: white;
+      }
+
+      .sample-logo {
+        font-family: "Righteous", sans-serif;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        color: white;
+        text-shadow: 0 0 10px var(--neon-blue);
+      }
+
+      .sample-sponsor {
+        font-family: "Righteous", sans-serif;
+        font-size: 1.6rem;
+        margin-bottom: 0.5rem;
+        color: var(--neon-pink);
+        text-shadow: 0 0 15px var(--neon-pink);
+      }
+
+      .card-back-tag {
+        position: absolute;
+        top: -15px;
+        left: 20px;
+        background: var(--neon-green);
+        color: black;
+        padding: 0.4rem 1.5rem;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        z-index: 10;
+        border: 2px solid white;
+      }
+
+      .inventory-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin: 4rem 0;
+      }
+
+      .inventory-card {
+        background: linear-gradient(145deg, #0a0a0a, #000);
+        border: 3px solid;
+        border-radius: 30px;
+        padding: 2.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .inventory-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 0 40px rgba(217, 21, 130, 0.4);
+      }
+
+      .inventory-card.premium {
+        border-color: var(--neon-pink, #d91582);
+        box-shadow: 0 0 30px rgba(217, 21, 130, 0.3);
+      }
+
+      .inventory-card.featured {
+        border-color: gold;
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.3);
+        transform: scale(1.02);
+      }
+
+      .inventory-badge {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: var(--neon-pink);
+        color: black;
+        padding: 0.4rem 1.2rem;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+      }
+
+      .inventory-badge.gold {
+        background: gold;
+        color: black;
+      }
+
+      .inventory-title {
+        font-size: 2.2rem;
+        font-weight: 900;
+        margin-bottom: 0.5rem;
+        font-family: "Righteous", sans-serif;
+      }
+
+      .inventory-page {
+        font-size: 1.1rem;
+        color: var(--neon-blue);
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 1.5rem;
+      }
+
+      .inventory-price {
+        font-size: 3rem;
+        font-weight: 900;
+        color: var(--neon-pink);
+        text-shadow: 0 0 15px var(--neon-pink);
+        margin: 1.5rem 0 0.5rem;
+      }
+
+      .inventory-price.gold {
+        color: gold;
+        text-shadow: 0 0 15px gold;
+      }
+
+      .inventory-price small {
+        font-size: 1.2rem;
+        color: white;
+        text-shadow: none;
+        font-weight: 400;
+      }
+
+      .inventory-features {
+        list-style: none;
+        padding: 0;
+        margin: 2rem 0;
+      }
+
+      .inventory-features li {
+        margin: 1rem 0;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 1.1rem;
+        text-transform: none;
+      }
+
+      .inventory-features li::before {
+        content: "✅";
+        margin-right: 0.5rem;
+      }
+
+      .inventory-features li.premium::before {
+        content: "👑";
+      }
+
+      .exclusive-badge {
+        display: inline-block;
+        background: rgba(255, 215, 0, 0.2);
+        border: 1px solid gold;
+        color: gold;
+        padding: 0.2rem 1rem;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 800;
+        margin-left: 0.5rem;
+      }
+
+      .contact-section {
+        background: rgba(0, 0, 0, 0.3);
+        border: 3px solid var(--neon-pink, #d91582);
+        border-radius: 30px;
+        padding: 3rem;
+        margin: 4rem 0;
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .contact-email {
+        font-size: 2rem;
+        font-weight: 800;
+        color: var(--neon-blue, #0cac9d);
+        text-decoration: none;
+        border-bottom: 2px dashed var(--neon-pink, #d91582);
+        padding-bottom: 0.5rem;
+        margin: 1.5rem 0;
+        display: inline-block;
+      }
+
+      @media (max-width: 900px) {
+        .card-back-showcase,
+        .inventory-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card-sample {
+          width: 180px;
+          height: 250px;
+        }
+
+        .inventory-card.featured {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- MARQUEE TOP -->
+    <div class="marquee">
+      <span
+        >🏆 CARD BACK SPONSORSHIPS AVAILABLE · YOUR LOGO ON EVERY CARD ·
+        EXCLUSIVE CATEGORY RIGHTS · 🏆</span
+      >
+    </div>
+
+    <div class="container">
+      <!-- NAVIGATION BACK TO HOME -->
+      <div style="margin: 1rem 0">
+        <a
+          href="index.html"
+          style="
+            color: var(--neon-blue, #0cac9d);
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 700;
+          "
+          >← BACK TO GAMES</a
+        >
+      </div>
+
+      <!-- HERO SECTION -->
+      <div class="sponsor-hero">
+        <h1>
+          <span class="accent-pink">YOUR LOGO.</span>
+          <span class="accent-teal">ON OUR CARDS.</span>
+        </h1>
+        <div class="sponsor-tagline">
+          THE MOST PREMIUM INVENTORY IN DRINKING GAMES
+        </div>
+        <p
+          style="
+            font-size: 1.3rem;
+            text-transform: none;
+            max-width: 800px;
+            margin: 2rem auto;
+            color: rgba(255, 255, 255, 0.9);
+          "
+        >
+          Not a banner. Not a sidebar.
+          <strong
+            >Your brand, in the player's hand, for the entire game.</strong
+          >
+          No ad blockers. No distractions. Just your logo, front and center.
+        </p>
+      </div>
+
+      <!-- CARD BACK SHOWCASE - INTERACTIVE MOCKUP -->
+      <div class="card-back-showcase">
+        <div class="card-mockup">
+          <span class="card-back-tag">👑 PREMIUM SPONSORSHIP</span>
+          <div class="card-sample">
+            <div class="card-sample-inner">
+              <!-- FRONT: Your Brand -->
+              <div class="card-sample-front">
+                <div class="sample-logo">🎯 SHOT<br />O'CLOCK</div>
+                <div style="font-size: 3rem; margin: 1rem 0">❓</div>
+                <div style="font-size: 1.2rem; color: var(--neon-blue)">
+                  CARD 1
+                </div>
+              </div>
+              <!-- BACK: Sponsor Logo -->
+              <div class="card-sample-back">
+                <div style="font-size: 2.5rem; margin-bottom: 0.5rem">🍻</div>
+                <div class="sample-sponsor">YOUR-LOGO</div>
+                <div
+                  style="
+                    font-size: 1rem;
+                    color: var(--neon-blue);
+                    margin: 0.5rem 0;
+                  "
+                >
+                  LIQUOR
+                </div>
+                <div
+                  style="
+                    font-size: 0.8rem;
+                    margin-top: 1rem;
+                    color: rgba(255, 255, 255, 0.7);
+                  "
+                >
+                  Official Partner
+                </div>
+              </div>
+            </div>
+          </div>
+          <p
+            style="
+              margin-top: 2rem;
+              font-size: 0.9rem;
+              color: rgba(255, 255, 255, 0.7);
+            "
+          >
+            Hover to flip → Your logo here
+          </p>
+        </div>
+        <div
+          style="display: flex; flex-direction: column; justify-content: center"
+        >
+          <span
+            class="badge-premium"
+            style="margin-bottom: 1rem; width: fit-content"
+            >EXCLUSIVE CATEGORY RIGHTS</span
+          >
+          <h3
+            style="
+              font-size: 2.2rem;
+              margin-bottom: 1rem;
+              font-family: &quot;Righteous&quot;;
+            "
+          >
+            YOUR BRAND,<br />IN THEIR HANDS
+          </h3>
+          <p
+            style="
+              font-size: 1.1rem;
+              text-transform: none;
+              margin-bottom: 1.5rem;
+            "
+          >
+            Every card flip. Every round. Every game night.
+            <strong>Thousands of impressions, zero ad blockers.</strong>
+          </p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap">
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                padding: 0.8rem 1.5rem;
+                border-radius: 50px;
+              "
+            >
+              🎮 52 cards per deck
+            </div>
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                padding: 0.8rem 1.5rem;
+                border-radius: 50px;
+              "
+            >
+              ⏱️ 60+ min exposure
+            </div>
+            <div
+              style="
+                background: rgba(255, 255, 255, 0.1);
+                padding: 0.8rem 1.5rem;
+                border-radius: 50px;
+              "
+            >
+              🚫 0% adblock loss
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD BACK SPONSORSHIP TIERS - PREMIUM INVENTORY -->
+      <h2 class="section-title" style="margin-bottom: 1rem">
+        <span class="accent-pink">👑 CARD BACK</span>
+        <span class="accent-teal">SPONSORSHIPS</span>
+      </h2>
+      <p
+        style="
+          text-align: center;
+          font-size: 1.2rem;
+          text-transform: none;
+          margin-bottom: 3rem;
+          color: gold;
+        "
+      >
+        The most valuable real estate on our site. Limited to ONE sponsor per
+        game category.
+      </p>
+
+      <div class="inventory-grid">
+        <!-- SHOOTERS - CARD BACK SPONSORSHIP -->
+        <div class="inventory-card premium featured">
+          <div class="inventory-badge gold">🔥 BESTSELLER</div>
+          <div class="inventory-title">SHOOTERS</div>
+          <div class="inventory-page">CARD BACK · EXCLUSIVE CATEGORY</div>
+
+          <div
+            style="
+              background: rgba(255, 215, 0, 0.1);
+              border-left: 4px solid gold;
+              padding: 1rem;
+              margin: 1.5rem 0;
+              border-radius: 10px;
+            "
+          >
+            <span style="color: gold; font-weight: 800">🎯 YOUR LOGO HERE</span>
+            <p
+              style="
+                text-transform: none;
+                margin-top: 0.5rem;
+                font-size: 0.9rem;
+              "
+            >
+              Every card. Every flip. Every match.
+            </p>
+          </div>
+
+          <div class="inventory-price gold">R12,000 <small>/month</small></div>
+
+          <ul class="inventory-features">
+            <li class="premium">👑 Your logo on EVERY Shooters card back</li>
+            <li>🎮 3-card draw · 5–8 min average session</li>
+            <li>🚫 Exclusive category rights (no competing liquor brands)</li>
+            <li>📈 Monthly impression report</li>
+            <li>🏆 First right of refusal on tournament sponsorships</li>
+            <li>🎯 Promo code tracking included</li>
+          </ul>
+
+          <a href="#contact" style="text-decoration: none">
+            <button
+              class="neon-btn pink"
+              style="width: 100%; padding: 1.2rem; font-size: 1.2rem"
+            >
+              SECURE EXCLUSIVE RIGHTS →
+            </button>
+          </a>
+        </div>
+
+        <!-- KINGS CUP - CARD BACK SPONSORSHIP (COMING SOON) -->
+        <div class="inventory-card premium">
+          <div class="inventory-badge" style="background: var(--neon-blue)">
+            📊 COMING SOON
+          </div>
+          <div class="inventory-title">KINGS CUP</div>
+          <div class="inventory-page">CARD BACK · INTERACTIVE DECK</div>
+
+          <div
+            style="
+              background: rgba(0, 247, 255, 0.1);
+              border-left: 4px solid var(--neon-blue);
+              padding: 1rem;
+              margin: 1.5rem 0;
+              border-radius: 10px;
+            "
+          >
+            <span style="color: var(--neon-blue); font-weight: 800"
+              >🃏 52 CARD DECK</span
+            >
+            <p
+              style="
+                text-transform: none;
+                margin-top: 0.5rem;
+                font-size: 0.9rem;
+              "
+            >
+              Launching Q2 2026 · Join the waiting list
+            </p>
+          </div>
+
+          <div
+            class="inventory-price"
+            style="
+              color: var(--neon-blue);
+              text-shadow: 0 0 15px var(--neon-blue);
+            "
+          >
+            R15,000 <small>/month</small>
+          </div>
+
+          <ul class="inventory-features">
+            <li>👑 Your logo on ALL 52 Kings Cup cards</li>
+            <li>🃏 Full interactive deck · 20–60 min sessions</li>
+            <li>🚫 Exclusive category rights</li>
+            <li>📊 Highest traffic game page</li>
+            <li>🎮 House rule builder integration</li>
+            <li>📈 Launch partner benefits</li>
+          </ul>
+
+          <a href="#contact" style="text-decoration: none">
+            <button
+              class="neon-btn"
+              style="
+                width: 100%;
+                padding: 1.2rem;
+                font-size: 1.2rem;
+                border-color: var(--neon-blue);
+                color: var(--neon-blue);
+              "
+            >
+              JOIN WAITING LIST →
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <!-- GAME PAGE BANNER INVENTORY -->
+      <h2 class="section-title" style="margin-top: 2rem">
+        <span class="accent-teal">GAME PAGE</span>
+        <span class="accent-pink">BANNERS</span>
+      </h2>
+      <p
+        style="
+          text-align: center;
+          font-size: 1.1rem;
+          text-transform: none;
+          margin-bottom: 2rem;
+        "
+      >
+        Premium banner placements inside our most popular games.
+      </p>
+
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+          margin-bottom: 3rem;
+        "
+      >
+        <!-- SHOOTERS BANNER -->
+        <div class="inventory-card" style="border-color: var(--neon-pink)">
+          <div class="inventory-title" style="font-size: 1.8rem">SHOOTERS</div>
+          <div class="inventory-page">IN-GAME BANNER</div>
+          <div
+            style="
+              font-size: 2.2rem;
+              font-weight: 900;
+              color: var(--neon-pink);
+              margin: 1rem 0;
+            "
+          >
+            R5,000 <small style="font-size: 1rem">/month</small>
+          </div>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              margin: 1.5rem 0;
+              text-transform: none;
+            "
+          >
+            <li style="margin: 0.8rem 0">
+              ✅ Premium banner inside game interface
+            </li>
+            <li style="margin: 0.8rem 0">✅ 5–8 min average session</li>
+            <li style="margin: 0.8rem 0">✅ Monthly performance report</li>
+          </ul>
+          <a href="#contact" style="text-decoration: none">
+            <button class="neon-btn pink" style="width: 100%">INQUIRE</button>
+          </a>
+        </div>
+
+        <!-- KINGS CUP BANNER -->
+        <div class="inventory-card" style="border-color: var(--neon-blue)">
+          <div class="inventory-title" style="font-size: 1.8rem">KINGS CUP</div>
+          <div class="inventory-page">RULES PAGE BANNER</div>
+          <div
+            style="
+              font-size: 2.2rem;
+              font-weight: 900;
+              color: var(--neon-blue);
+              margin: 1rem 0;
+            "
+          >
+            R4,000 <small style="font-size: 1rem">/month</small>
+          </div>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              margin: 1.5rem 0;
+              text-transform: none;
+            "
+          >
+            <li style="margin: 0.8rem 0">✅ High traffic rules page</li>
+            <li style="margin: 0.8rem 0">✅ 3–5 min average session</li>
+            <li style="margin: 0.8rem 0">✅ Promo code tracking</li>
+          </ul>
+          <a href="#contact" style="text-decoration: none">
+            <button
+              class="neon-btn"
+              style="
+                width: 100%;
+                border-color: var(--neon-blue);
+                color: var(--neon-blue);
+              "
+            >
+              INQUIRE
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <!-- HOMEPAGE BANNERS -->
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 2rem;
+          margin-bottom: 4rem;
+        "
+      >
+        <div class="inventory-card" style="border-color: var(--neon-pink)">
+          <div class="inventory-title" style="font-size: 1.8rem">HOMEPAGE</div>
+          <div class="inventory-page">ABOVE GAME CARDS</div>
+          <div
+            style="
+              font-size: 2.2rem;
+              font-weight: 900;
+              color: var(--neon-pink);
+              margin: 1rem 0;
+            "
+          >
+            R3,000 <small style="font-size: 1rem">/month</small>
+          </div>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              margin: 1.5rem 0;
+              text-transform: none;
+            "
+          >
+            <li style="margin: 0.8rem 0">✅ First impression, every visitor</li>
+            <li style="margin: 0.8rem 0">✅ Above the fold</li>
+          </ul>
+          <a href="#contact" style="text-decoration: none">
+            <button class="neon-btn pink" style="width: 100%">INQUIRE</button>
+          </a>
+        </div>
+
+        <div class="inventory-card" style="border-color: var(--neon-blue)">
+          <div class="inventory-title" style="font-size: 1.8rem">HOMEPAGE</div>
+          <div class="inventory-page">BELOW GAME CARDS</div>
+          <div
+            style="
+              font-size: 2.2rem;
+              font-weight: 900;
+              color: var(--neon-blue);
+              margin: 1rem 0;
+            "
+          >
+            R1,800 <small style="font-size: 1rem">/month</small>
+          </div>
+          <ul
+            style="
+              list-style: none;
+              padding: 0;
+              margin: 1.5rem 0;
+              text-transform: none;
+            "
+          >
+            <li style="margin: 0.8rem 0">✅ Secondary visibility</li>
+            <li style="margin: 0.8rem 0">✅ 4 weeks placement</li>
+          </ul>
+          <a href="#contact" style="text-decoration: none">
+            <button
+              class="neon-btn"
+              style="
+                width: 100%;
+                border-color: var(--neon-blue);
+                color: var(--neon-blue);
+              "
+            >
+              INQUIRE
+            </button>
+          </a>
+        </div>
+      </div>
+
+      <!-- GUARANTEE + CONTACT -->
+      <div id="contact" class="contact-section">
+        <div
+          style="
+            display: inline-block;
+            border: 2px solid var(--neon-green);
+            border-radius: 50px;
+            padding: 0.5rem 2rem;
+            margin-bottom: 2rem;
+          "
+        >
+          <span style="color: var(--neon-green); font-weight: 800"
+            >⚡ FIRST MONTH FREE · SATISFACTION GUARANTEE ⚡</span
+          >
+        </div>
+
+        <h2 style="font-size: 2.5rem; margin-bottom: 1rem">
+          <span class="accent-pink">READY TO</span>
+          <span class="accent-teal">DOMINATE?</span>
+        </h2>
+        <p style="font-size: 1.2rem; text-transform: none; margin-bottom: 2rem">
+          Card back sponsorships are limited to ONE brand per category. Secure
+          your exclusivity today.
+        </p>
+
+        <a href="mailto:shotoclock@gmail.com" class="contact-email">
+          📧 shotoclock@gmail.com
+        </a>
+
+        <p style="margin-top: 2rem; font-size: 1rem; opacity: 0.9">
+          Responses within 24 hours · Custom packages available for national
+          chains
+        </p>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <span class="footer-logo">SHOT O'CLOCK</span>
+        <span class="footer-responsibility">RESPONSIBLE DRINKING · 21+</span>
+        <a
+          href="index.html"
+          style="color: white; text-decoration: none; font-weight: 500"
+          >← HOME</a
+        >
+        <a
+          href="sponsor.html"
+          style="
+            color: var(--neon-pink);
+            text-decoration: none;
+            font-weight: 700;
+          "
+          >📢 SPONSOR</a
+        >
+      </div>
+    </div>
+
+    <!-- BOTTOM MARQUEE -->
+    <div class="marquee marquee-bottom">
+      <span
+        >👑 CARD BACK SPONSORSHIPS · SHOOTERS R12K/MONTH · KINGS CUP R15K/MONTH
+        · EXCLUSIVE CATEGORY RIGHTS · 👑</span
+      >
+    </div>
+  </body>
+</html>
