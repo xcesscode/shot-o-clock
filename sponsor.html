@@ -323,6 +323,7 @@
 
       gtag("config", "G-31WJRYHQBF");
     </script>
+    <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
     <!-- MARQUEE TOP -->
@@ -854,5 +855,19 @@
         · EXCLUSIVE CATEGORY RIGHTS · 👑</span
       >
     </div>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then((registration) => {
+              console.log("ServiceWorker registered: ", registration);
+            })
+            .catch((error) => {
+              console.log("ServiceWorker registration failed: ", error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
