@@ -24,13 +24,11 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
-
       gtag("config", "G-31WJRYHQBF");
     </script>
     <link rel="manifest" href="/manifest.json" />
   </head>
   <body>
-    <!-- ===== AGE VERIFICATION GATE ===== -->
     <!-- ===== AGE VERIFICATION GATE - YES/NO ===== -->
     <div id="ageGate" class="age-modal">
       <div class="age-modal-content">
@@ -50,7 +48,14 @@
           ARE YOU 18 OR OLDER?
         </p>
 
-        <div style="display: flex; gap: 30px; justify-content: center">
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            justify-content: center;
+          "
+        >
           <button onclick="verifyAge(true)" class="neon-btn green">YES</button>
           <button onclick="verifyAge(false)" class="neon-btn pink">NO</button>
         </div>
@@ -98,16 +103,20 @@
       </div>
     </header>
 
-    <!-- ===== PARTY BANNER - EVENT PROMO ===== -->
-    <!-- <div class="party-banner">
-      <div class="banner-content">
-        <span class="neon-text-pink"
-          >🔥 FRIDAY NIGHT RAVE · 2X DARES · 21+ ONLY 🔥</span
-        >
-      </div>
-    </div> -->
-
     <div class="neon-grid"></div>
+    <!-- NAVIGATION BACK TO HOME -->
+    <div style="margin: 1rem 0">
+      <a
+        href="/index.html"
+        style="
+          color: var(--neon-blue, #0cac9d);
+          text-decoration: none;
+          font-size: 1.2rem;
+          font-weight: 700;
+        "
+        >← BACK TO GAMES</a
+      >
+    </div>
 
     <div class="player-controls">
       <button id="addBtn" class="neon-btn pink">➕ ADD PLAYER</button>
@@ -127,45 +136,264 @@
         <!-- Result appears here with neon glow -->
       </div>
 
+      <!-- Camera UI Modal (hidden by default) -->
+      <div
+        id="cameraUI"
+        style="
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.95);
+          z-index: 9999;
+          align-items: center;
+          justify-content: center;
+          backdrop-filter: blur(10px);
+        "
+      >
+        <div
+          style="
+            background: #0a0a14;
+            border: 3px solid var(--neon-pink);
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(217, 21, 130, 0.5);
+            position: relative;
+          "
+        >
+          <button
+            onclick="closeCameraUI()"
+            style="
+              position: absolute;
+              top: 15px;
+              right: 15px;
+              background: none;
+              border: none;
+              color: white;
+              font-size: 2rem;
+              cursor: pointer;
+              z-index: 10;
+            "
+          >
+            ✕
+          </button>
+
+          <h2
+            class="neon-text-pink"
+            style="font-size: 2.2rem; margin-bottom: 10px"
+          >
+            📸 15TH CARD MOMENT
+          </h2>
+          <p style="font-size: 1.3rem; margin-bottom: 30px; color: white">
+            Everyone shout SHOTS O'CLOCK!
+          </p>
+
+          <!-- Countdown Display -->
+          <div
+            id="countdownDisplay"
+            style="
+              font-size: 6rem;
+              font-weight: 900;
+              color: var(--neon-pink);
+              text-shadow: 0 0 30px var(--neon-pink);
+              margin: 20px 0;
+            "
+          >
+            5
+          </div>
+
+          <!-- Start Button -->
+          <button
+            id="startRecordingBtn"
+            class="neon-btn pink"
+            style="padding: 15px 40px; font-size: 1.5rem; margin: 20px 0"
+          >
+            🎬 START RECORDING
+          </button>
+
+          <!-- Live Camera Preview (hidden initially) -->
+          <video
+            id="liveCamera"
+            autoplay
+            playsinline
+            style="
+              width: 100%;
+              max-width: 400px;
+              border-radius: 20px;
+              border: 3px solid var(--neon-blue);
+              margin: 20px 0;
+              display: none;
+            "
+          ></video>
+
+          <!-- Video Preview Area (hidden initially) -->
+          <div id="videoPreviewArea" style="display: none; margin: 20px 0">
+            <video
+              id="recordedVideo"
+              controls
+              style="
+                width: 100%;
+                max-width: 400px;
+                border-radius: 20px;
+                border: 3px solid var(--neon-pink);
+                margin-bottom: 20px;
+              "
+            ></video>
+
+            <div
+              style="
+                display: flex;
+                gap: 15px;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-top: 20px;
+              "
+            >
+              <!-- WhatsApp Button -->
+              <button
+                onclick="shareVideo('whatsapp')"
+                style="
+                  background: #25d366;
+                  border: none;
+                  border-radius: 50px;
+                  padding: 12px 25px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 0 15px rgba(37, 211, 102, 0.5);
+                "
+                onmouseover="this.style.transform = 'scale(1.05)'"
+                onmouseout="this.style.transform = 'scale(1)'"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path
+                    d="M19.077 4.928C17.191 3.041 14.683 2 12.006 2 6.798 2 2.548 6.193 2.54 11.393c-.003 1.747.456 3.467 1.33 5.01L2.482 21.5l5.223-1.368c1.533.823 3.238 1.259 4.976 1.262h.004c5.19 0 9.457-4.194 9.465-9.395.004-2.512-.972-4.876-2.859-6.763l-.214-.208zM12.024 19.94h-.003c-1.597-.003-3.161-.432-4.528-1.24l-.325-.194-3.099.812.83-3.014-.213-.337c-.792-1.26-1.211-2.713-1.208-4.196.008-4.343 3.542-7.873 7.897-7.873 2.107 0 4.091.822 5.583 2.316 1.492 1.493 2.314 3.474 2.31 5.581-.007 4.344-3.54 7.873-7.882 7.873l.003.002zm4.328-5.854c-.237-.12-1.403-.693-1.621-.772-.218-.08-.376-.12-.535.12-.158.24-.614.772-.753.93-.139.16-.278.18-.515.06-.954-.48-1.68-1.066-2.335-1.739-.401-.412-.72-.855-.948-1.325-.1-.206-.011-.318.075-.42.078-.09.173-.2.252-.3.126-.148.168-.247.252-.413.084-.165.042-.31-.021-.434-.063-.124-.536-1.29-.735-1.767-.194-.464-.39-.401-.536-.408-.138-.006-.297-.008-.455-.008-.237 0-.535.077-.815.386-.28.31-1.068 1.045-1.068 2.55 0 1.504 1.096 2.958 1.249 3.162.153.205 2.127 3.313 5.255 4.516 2.561.987 3.128.817 3.693.766.53-.048 1.713-.7 1.955-1.377.241-.676.241-1.256.169-1.377-.072-.12-.266-.193-.503-.313l.003-.003z"
+                  />
+                </svg>
+                <span
+                  style="
+                    color: white;
+                    font-weight: 700;
+                    font-family: &quot;Archivo Black&quot;, sans-serif;
+                  "
+                  >WhatsApp</span
+                >
+              </button>
+
+              <!-- TikTok Button -->
+              <button
+                onclick="shareVideo('tiktok')"
+                style="
+                  background: #000000;
+                  border: none;
+                  border-radius: 50px;
+                  padding: 12px 25px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+                  position: relative;
+                  overflow: hidden;
+                "
+                onmouseover="this.style.transform = 'scale(1.05)'"
+                onmouseout="this.style.transform = 'scale(1)'"
+              >
+                <!-- TikTok logo gradient effect -->
+                <div
+                  style="
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(45deg, #25f4ee, #fe2c55);
+                    opacity: 0.2;
+                  "
+                ></div>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="white"
+                  style="position: relative; z-index: 1"
+                >
+                  <path
+                    d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"
+                  />
+                </svg>
+                <span
+                  style="
+                    color: white;
+                    font-weight: 700;
+                    font-family: &quot;Archivo Black&quot;, sans-serif;
+                    position: relative;
+                    z-index: 1;
+                  "
+                  >TikTok</span
+                >
+              </button>
+
+              <!-- Download Button -->
+              <button
+                onclick="downloadVideo()"
+                style="
+                  background: linear-gradient(145deg, #d91582, #0cac9d);
+                  border: none;
+                  border-radius: 50px;
+                  padding: 12px 25px;
+                  display: flex;
+                  align-items: center;
+                  gap: 10px;
+                  cursor: pointer;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 0 15px rgba(217, 21, 130, 0.5);
+                "
+                onmouseover="this.style.transform = 'scale(1.05)'"
+                onmouseout="this.style.transform = 'scale(1)'"
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" />
+                </svg>
+                <span
+                  style="
+                    color: white;
+                    font-weight: 700;
+                    font-family: &quot;Archivo Black&quot;, sans-serif;
+                  "
+                  >Save Video</span
+                >
+              </button>
+
+              <!-- Close Button (keep your existing one) -->
+              <button
+                onclick="closeCameraUI()"
+                class="neon-btn"
+                style="padding: 12px 25px"
+              >
+                ✖️ Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="cardsContainer">
         <!-- Cards generated by JS -->
       </div>
 
       <div id="btnContainer" class="control-buttons">
-        <!-- <button id="newRoundBtn" class="neon-btn green">🎲 NEW ROUND</button> -->
         <button id="nextBtn" class="neon-btn pink">⏭️ NEXT PLAYER</button>
       </div>
     </div>
-
-    <!-- ===== RESPONSIBILITY BANNER - BOTTOM (FIXED) ===== -->
-    <!-- <div class="responsibility-footer">
-      <div class="footer-content">
-        <span class="warning-icon">⚠️</span>
-        <span class="warning-text"
-          >DRINK RESPONSIBLY · 18+ ONLY · KNOW YOUR LIMITS · NEVER DRINK AND
-          DRIVE</span
-        >
-        <span class="warning-icon">⚠️</span>
-      </div>
-      <div class="footer-sub">
-        This game is intended for adults 18 years and older. Excessive drinking
-        can cause serious health issues.
-      </div>
-    </div> -->
-
-    <!-- ===== SCROLLING BANNER - BOTTOM ===== -->
-    <!-- <div class="marquee-container bottom-banner">
-      <div class="marquee-content">
-        <span
-          >🎮 BEER PONG · KINGS CUP · FLIP CUP · QUARTERS · RAGE CAGE · NEVER
-          HAVE I EVER · 🎮</span
-        >
-        <span
-          >🎮 BEER PONG · KINGS CUP · FLIP CUP · QUARTERS · RAGE CAGE · NEVER
-          HAVE I EVER · 🎮</span
-        >
-      </div>
-    </div> -->
 
     <div class="vignette"></div>
     <script src="shooters.js"></script>
@@ -182,6 +410,24 @@
             });
         });
       }
+
+      // Connect the start recording button
+      document
+        .getElementById("startRecordingBtn")
+        .addEventListener("click", async function () {
+          // Hide start button
+          this.style.display = "none";
+
+          // Request camera
+          const cameraGranted = await requestCamera();
+          if (!cameraGranted) {
+            closeCameraUI();
+            return;
+          }
+
+          // Start countdown
+          startCountdown();
+        });
     </script>
   </body>
 </html>

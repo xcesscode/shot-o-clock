@@ -1,7 +1,6 @@
 // ===== SHOOTERS - NEON RAVE DRINKING GAME =====
 const addBtn = document.getElementById("addBtn");
 const resetBtn = document.getElementById("resetBtn");
-// const newRoundBtn = document.getElementById("newRoundBtn");
 const nextBtn = document.getElementById("nextBtn");
 const action = document.getElementById("action");
 const player = document.getElementById("player");
@@ -9,26 +8,210 @@ const result = document.getElementById("result");
 const cardsContainer = document.getElementById("cardsContainer");
 
 let turnCounter = 0;
+let cardFlipCounter = 0;
+const SPECIAL_CARD_NUMBER = 15;
+let specialDareTriggered = false;
 let currentDares = [];
 let cardsRevealed = false;
 
+// ===== CAMERA FUNCTIONS =====
+let mediaStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+
+function startCameraFlow() {
+  // Show the camera UI
+  document.getElementById("cameraUI").style.display = "flex";
+
+  // Reset UI state
+  document.getElementById("countdownDisplay").style.display = "block";
+  document.getElementById("startRecordingBtn").style.display = "inline-block";
+  document.getElementById("liveCamera").style.display = "none";
+  document.getElementById("videoPreviewArea").style.display = "none";
+  document.getElementById("countdownDisplay").textContent = "5";
+}
+
+async function requestCamera() {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "user",
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+      },
+      audio: true,
+    });
+
+    const liveVideo = document.getElementById("liveCamera");
+    liveVideo.srcObject = mediaStream;
+    liveVideo.style.display = "block";
+
+    return true;
+  } catch (error) {
+    alert(
+      "📸 Camera access needed for the 15th card moment! Please allow camera permissions.",
+    );
+    console.error("Camera error:", error);
+    return false;
+  }
+}
+
+function startCountdown() {
+  let count = 5;
+  const countdownEl = document.getElementById("countdownDisplay");
+
+  const countdownInterval = setInterval(() => {
+    count--;
+    countdownEl.textContent = count;
+
+    if (count === 0) {
+      clearInterval(countdownInterval);
+      countdownEl.style.display = "none";
+      startRecording();
+    }
+  }, 1000);
+}
+
+function startRecording() {
+  if (!mediaStream) return;
+
+  recordedChunks = [];
+  mediaRecorder = new MediaRecorder(mediaStream);
+
+  mediaRecorder.ondataavailable = (event) => {
+    if (event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+
+  mediaRecorder.onstop = () => {
+    const blob = new Blob(recordedChunks, { type: "video/mp4" });
+    const videoUrl = URL.createObjectURL(blob);
+
+    const recordedVideo = document.getElementById("recordedVideo");
+    recordedVideo.src = videoUrl;
+
+    window.lastRecordedVideo = {
+      blob: blob,
+      url: videoUrl,
+    };
+
+    document.getElementById("liveCamera").style.display = "none";
+    document.getElementById("videoPreviewArea").style.display = "block";
+
+    if (mediaStream) {
+      mediaStream.getTracks().forEach((track) => track.stop());
+      mediaStream = null;
+    }
+  };
+
+  mediaRecorder.start();
+
+  setTimeout(() => {
+    if (mediaRecorder && mediaRecorder.state !== "inactive") {
+      mediaRecorder.stop();
+    }
+  }, 3000);
+}
+
+function closeCameraUI() {
+  document.getElementById("cameraUI").style.display = "none";
+
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    mediaRecorder.stop();
+  }
+
+  if (mediaStream) {
+    mediaStream.getTracks().forEach((track) => track.stop());
+    mediaStream = null;
+  }
+}
+
+function shareVideo(platform) {
+  if (!window.lastRecordedVideo) return;
+
+  const videoBlob = window.lastRecordedVideo.blob;
+  const videoFile = new File([videoBlob], "shotsoclock-15th-card.mp4", {
+    type: "video/mp4",
+  });
+
+  const shareText = "We just hit the 15th card on Shots O'Clock! 🎬🔫";
+  const shareUrl = "https://shotsoclock.co.za";
+  const hashtag = "#shotsoclock";
+
+  if (platform === "whatsapp") {
+    // WhatsApp - Works perfectly
+    if (navigator.share && navigator.canShare({ files: [videoFile] })) {
+      navigator
+        .share({
+          title: "Shots O'Clock",
+          text: shareText,
+          url: shareUrl,
+          files: [videoFile],
+        })
+        .catch(() => {
+          window.open(
+            `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl + " " + hashtag)}`,
+          );
+        });
+    } else {
+      window.open(
+        `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl + " " + hashtag)}`,
+      );
+    }
+  } else if (platform === "tiktok") {
+    // TikTok - Best possible flow
+    downloadVideo();
+
+    // Copy hashtag to clipboard
+    navigator.clipboard
+      .writeText(hashtag)
+      .then(() => {
+        // Ask user what's next
+        if (
+          confirm(
+            "📱 Video saved! Hashtag copied to clipboard. Open TikTok now?",
+          )
+        ) {
+          window.open("tiktok://");
+        } else {
+          alert("✅ Hashtag copied! Open TikTok and paste it when you upload.");
+        }
+      })
+      .catch(() => {
+        // Fallback if clipboard fails
+        if (confirm("📱 Video saved! Open TikTok to upload now?")) {
+          window.open("tiktok://");
+        }
+      });
+  }
+}
+
+function downloadVideo() {
+  if (!window.lastRecordedVideo) return;
+
+  const a = document.createElement("a");
+  a.href = window.lastRecordedVideo.url;
+  a.download = `shotsoclock-15th-card-${new Date().getTime()}.mp4`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 // ===== AGE VERIFICATION =====
-// ===== AGE VERIFICATION - YES/NO =====
 window.verifyAge = function (isOfAge) {
   if (isOfAge) {
-    // User is 21+ - fade out gate
     document.getElementById("ageGate").style.opacity = "0";
     setTimeout(() => {
       document.getElementById("ageGate").style.display = "none";
     }, 500);
   } else {
-    // User is under 21 - redirect or alert
-    alert("🔞 SORRY, YOU MUST BE 21 OR OLDER TO ENTER. DRINK RESPONSIBLY!");
-    window.location.href = "https://www.responsibility.org"; // Optional redirect
+    alert("🔞 SORRY, YOU MUST BE 18 OR OLDER TO ENTER. DRINK RESPONSIBLY!");
+    window.location.href = "https://www.responsibility.org";
   }
 };
 
-// 🎉 50+ NEON DARES - SHOOTERS EDITION 🎉
+// ===== DARES DATABASE =====
 const daresDatabase = [
   "🔮 TAKE A SHOT - CHUG! CHUG!",
   "🎯 CHOOSE SOMEONE TO TAKE A SHOT",
@@ -42,6 +225,7 @@ const daresDatabase = [
   "🎪 GIVE 2 SHOTS TO ANY PLAYER",
   "🤘 NON-DOMINANT HAND SHOT",
   "🎤 LAST TO RAISE HAND = DRINK",
+  "🎬 EVERYONE SHOUT SHOTS O'CLOCK! (Camera moment)",
   "📿 TELL A JOKE. NO LAUGH = 2 SHOTS",
   "🔄 SWAP DRINKS WITH SOMEONE",
   "🎭 RHYME TIME - YOU START",
@@ -105,22 +289,6 @@ addBtn.onclick = function () {
   }
 };
 
-// ===== NEW ROUND =====
-// newRoundBtn.onclick = function () {
-//   if (playersList.length === 0) {
-//     action.textContent = "⚠️ ADD PLAYERS FIRST!";
-//     action.classList.add("neon-text-pink");
-//     return;
-//   }
-//   resetCards();
-//   cardsRevealed = false;
-//   action.textContent = `${player.textContent}, PICK YOUR DESTINY!`;
-//   action.classList.add("neon-text-blue");
-//   result.innerHTML = "";
-//   newRoundBtn.disabled = false;
-//   nextBtn.disabled = false;
-// };
-
 // ===== NEXT PLAYER =====
 nextBtn.onclick = function () {
   if (playersList.length === 0) {
@@ -141,15 +309,16 @@ nextBtn.onclick = function () {
   action.textContent = `${player.textContent}, YOUR TURN!`;
   action.classList.add("neon-text-green");
   result.innerHTML = "";
-  newRoundBtn.disabled = false;
-  nextBtn.disabled = false;
 };
 
 // ===== RESET GAME =====
 resetBtn.onclick = function () {
   playersList.length = 0;
   turnCounter = 0;
-  player.textContent = "PLAYER 1";
+  cardFlipCounter = 0;
+  specialDareTriggered = false;
+
+  player.textContent = "ADD PLAYERS";
   action.textContent = "ADD PLAYERS TO BEGIN";
   action.classList.add("neon-text-blue");
   result.innerHTML = "";
@@ -196,21 +365,31 @@ function initializeCards() {
 function selectCard(cardIndex) {
   if (cardsRevealed || playersList.length === 0) return;
 
+  cardFlipCounter++;
+
   const card = document.querySelector(`.card[data-index="${cardIndex}"]`);
   const cardBack = card.querySelector(".card-back");
 
   card.classList.add("flipped");
 
-  const dare = currentDares[cardIndex];
-  cardBack.textContent = dare;
+  // Check if this is the 15th card
+  if (cardFlipCounter === SPECIAL_CARD_NUMBER && !specialDareTriggered) {
+    const specialDare =
+      "🎬 15TH CARD SPECIAL! EVERYONE SHOUT SHOTS O'CLOCK! 📸";
+    cardBack.textContent = specialDare;
+    result.innerHTML = `<div class="result-text">${specialDare}</div>`;
 
-  result.innerHTML = `<div class="result-text">${dare}</div>`;
+    startCameraFlow();
+    specialDareTriggered = true;
+  } else {
+    const dare = currentDares[cardIndex];
+    cardBack.textContent = dare;
+    result.innerHTML = `<div class="result-text">${dare}</div>`;
+  }
 
   cardsRevealed = true;
   action.textContent = "🎲 PERFORM THE DARE! 🎲";
   action.classList.add("neon-text-green");
-
-  newRoundBtn.disabled = true;
 }
 
 // ===== SELECT RANDOM DARES =====
